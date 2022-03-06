@@ -5,6 +5,14 @@ describe('Indecision Component', () => {
     let wrapper 
     let consolelogSpy
 
+    global.fetch = jest.fn(() => Promise.resolve({
+        json: () => Promise.resolve({
+            "answer": "yes",
+            "forced": false,
+            "image": "https://yesno.wtf/assets/yes/2.gif"
+        })
+    }))
+
     beforeEach(() => {
         wrapper = shallowMount (Indecision)
 
@@ -41,8 +49,16 @@ describe('Indecision Component', () => {
 
     })
 
-    test('testing getAnswer', () => {
+    test('testing getAnswer', async() => {
 
+        await wrapper.vm.getAnswer()
+
+        const img = wrapper.find('img')
+
+        expect(img.exists()).toBeTruthy()
+        expect (wrapper.vm.img).toBe('https://yesno.wtf/assets/yes/2.gif')
+        expect (wrapper.vm.answer).toBe('Si!')
+       
     })
 
     test('testing getAnswer - API bug ', () => {
