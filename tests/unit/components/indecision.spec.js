@@ -9,6 +9,8 @@ describe('Indecision Component', () => {
         wrapper = shallowMount (Indecision)
 
         consolelogSpy = jest.spyOn(console, 'log')
+
+        jest.clearAllMocks()
     })
 
     test('should match snapshot', () => {
@@ -27,7 +29,15 @@ describe('Indecision Component', () => {
 
     })
 
-    test('write symbol "?" should trigger the fetch', () => {
+    test('write symbol "?" should trigger the getAnswer', async() => {
+
+        const getAnswerSpy = jest.spyOn(wrapper.vm, 'getAnswer')
+
+        const input = wrapper.find('input')
+        await input.setValue('?')
+
+        expect (consolelogSpy).toHaveBeenCalledTimes(2)
+        expect(getAnswerSpy).toHaveBeenCalledTimes(1)
 
     })
 
