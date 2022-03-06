@@ -61,7 +61,13 @@ describe('Indecision Component', () => {
        
     })
 
-    test('testing getAnswer - API bug ', () => {
+    test('testing getAnswer - API bug ', async() => {
 
+        fetch.mockImplementationOnce(() => Promise.reject('API is down'))
+        await wrapper.vm.getAnswer()
+        const img = wrapper.find('img')
+        
+        expect(img.exists()).toBeFalsy()
+        expect (wrapper.vm.answer).toBe('Error al cargar API')
     })
 })
